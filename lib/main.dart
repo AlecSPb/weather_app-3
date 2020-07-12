@@ -21,7 +21,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   //получение доступа к памяти устройства и считывание настройки темы
-  //если найстройка еще не определа, то по ум. - светлая тема
+  //если настройка еще не определена, то по ум. - светлая тема
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isDarkTheme = prefs.getBool('theme') ?? false;
 
@@ -84,7 +84,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      //при отсутвии интернеты выведется ошибка
+      //при отсутвии интернета выведется ошибка
       subscription = Connectivity()
           .onConnectivityChanged
           .listen((ConnectivityResult result) {
