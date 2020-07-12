@@ -20,13 +20,20 @@ import 'package:weather_app/services/themeProvider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  //получение доступа к памяти устройства и считывание настройки темы
+  //если найстройка еще не определа, то по ум. - светлая тема
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isDarkTheme = prefs.getBool('theme') ?? false;
 
+  //установка цвета статусбара на прозрачный
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
 
+  //функция запуска основого виджета (приложения)
+  //и провайдеров для создания логики
+  //ThemeProvider - смена темы
+  //WeatherProvider - логика всего приложения
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<WeatherProvider>(create: (_) => WeatherProvider()),
@@ -38,10 +45,12 @@ void main() async {
   ));
 }
 
+//основной виджет приложения
 class WeatherApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeProvider>(context);
+    //настройка темы
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: themeNotifier.themeData.copyWith(
@@ -51,11 +60,12 @@ class WeatherApp extends StatelessWidget {
           primaryIconTheme: IconThemeData(color: Colors.white),
           textSelectionHandleColor:
               Provider.of<WeatherProvider>(context).secondAccent),
+      //начальный экран
       home: HomePage(),
     );
   }
 }
-
+//начальный экран
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
 
@@ -64,12 +74,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  //stream, который следит за подключением к интернету
+  //при изменении типа подключения, выполнится функция описанная ниже
   StreamSubscription<ConnectivityResult> subscription;
 
+  //функция всех stateful виджетов (которые имеют сосотяние)
+  //выполняется при запуске (начале отрисовки) виджета
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      //при отсутвии интернеты выведется ошибка
       subscription = Connectivity()
           .onConnectivityChanged
           .listen((ConnectivityResult result) {
@@ -80,19 +95,25 @@ class _HomePageState extends State<HomePage> {
           Provider.of<WeatherProvider>(context, listen: false).error = true;
         }
       });
+      //функция инициализации (получение позиции, запрос на пролучение прозноза)
       Provider.of<WeatherProvider>(context, listen: false).init();
     });
   }
 
+  //уничтожение виджета
   @override
   void dispose() {
     super.dispose();
+    //отключение от stream'a
     subscription.cancel();
   }
 
+  //функция отрисовки виджета
   @override
   Widget build(BuildContext context) {
+    //переменная для доступа к данным
     WeatherProvider provider = Provider.of<WeatherProvider>(context);
+    //основное
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -117,6 +138,7 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: Icon(Icons.update),
             onPressed: () {
+              //обновление прогноза
               if (!provider.isLoading) {
                 double lat = provider.lat;
                 double lon = provider.lon;
