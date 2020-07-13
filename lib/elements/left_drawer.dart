@@ -9,12 +9,18 @@ import 'package:weather_app/views/info_page.dart';
 import 'package:weather_app/views/map_page.dart';
 import 'package:weather_app/views/search_page.dart';
 
+//виджет левой панели меню
+
 class WeatherDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    //настройки темы
     ThemeData theme = Theme.of(context);
+    //доступ к размерам экрана (в пикселях)
     Size size = MediaQuery.of(context).size;
+    //цвет текста
     Color color = theme.textTheme.headline1.color;
+    //логика
     WeatherProvider themeProvider = Provider.of<WeatherProvider>(context);
     return Container(
       width: size.width * (2 / 3),
@@ -41,6 +47,7 @@ class WeatherDrawer extends StatelessWidget {
             ),
           ),
           Divider(),
+          //переход к окну поиска
           ListTile(
             leading: Icon(
               Icons.search,
@@ -55,6 +62,7 @@ class WeatherDrawer extends StatelessWidget {
               Navigator.push(context, new FadeRoute(page: SearchPage()));
             },
           ),
+          //переход к окну карты
           ListTile(
             leading: Icon(
               Icons.map,
@@ -69,6 +77,7 @@ class WeatherDrawer extends StatelessWidget {
               Navigator.push(context, new FadeRoute(page: MapPage()));
             },
           ),
+          //определение текущей позиции
           ListTile(
             leading: Icon(
               Icons.gps_fixed,
@@ -90,6 +99,7 @@ class WeatherDrawer extends StatelessWidget {
           Spacer(
             flex: 9,
           ),
+          //переключатель для смены ед. измерения температуры
           Container(
             alignment: Alignment.center,
             height: 50,
@@ -118,6 +128,7 @@ class WeatherDrawer extends StatelessWidget {
               ],
             ),
           ),
+          //переход к окну инфо. о приложении
           ListTile(
             leading: Icon(
               Icons.info,
@@ -132,6 +143,7 @@ class WeatherDrawer extends StatelessWidget {
               Navigator.push(context, new FadeRoute(page: InfoPage()));
             },
           ),
+          //смена темы
           ListTile(
             leading: Icon(
               Icons.wb_sunny,
