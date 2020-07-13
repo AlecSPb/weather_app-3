@@ -4,19 +4,24 @@ import 'package:weather_app/services/forecast_models.dart';
 import 'package:weather_app/services/provider.dart';
 import 'package:weather_app/services/themeProvider.dart';
 
+// виджет подробного описания прогноза на текущий день
+
 class WeeklyMoreElement extends StatelessWidget {
   const WeeklyMoreElement({Key key, this.index, this.date}) : super(key: key);
 
-  final int index;
-  final String date;
+  final int index;  //индекс в списке
+  final String date;  //дата
 
   @override
   Widget build(BuildContext context) {
+    //настройки темы
     ThemeData theme = Theme.of(context);
+    //прогноз на выбранный день
     WeeklyForecast forecast =
         Provider.of<WeatherProvider>(context, listen: false)
             .forecast
             .weeklyForecast[index];
+    //логика
     WeatherProvider provider =
         Provider.of<WeatherProvider>(context, listen: false);
     return Column(
@@ -37,6 +42,7 @@ class WeeklyMoreElement extends StatelessWidget {
                   gradient: provider.gradient,
                   borderRadius: BorderRadius.circular(10),
                 ),
+                //listView из панелей с данными в стиле Вконтакте
                 child: ListView(padding: EdgeInsets.zero, children: [
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
@@ -148,6 +154,7 @@ class WeeklyMoreElement extends StatelessWidget {
     );
   }
 
+  //фунция, возвращающая колонну с данными о продолжительности дня
   Column buildDayLenBlock(WeeklyForecast forecast) {
     return Column(
       children: <Widget>[
@@ -226,6 +233,7 @@ class WeeklyMoreElement extends StatelessWidget {
     );
   }
 
+  //функция, возвращающая ряд с 3 виджетами из параметров
   Row buildDayLenRow({Widget childLeft, Widget childMiddle, childRight}) {
     return Row(
       children: <Widget>[
@@ -236,6 +244,7 @@ class WeeklyMoreElement extends StatelessWidget {
     );
   }
 
+  //функция, возвращающая ряд с данными и их ед. измерения
   Widget buildRowSecondary({
     List<String> stringList,
     List<String> signList,
@@ -287,7 +296,8 @@ class WeeklyMoreElement extends StatelessWidget {
       ),
     );
   }
-
+  
+  //функция, возвращающая ряд с заданным тектом
   Widget buildRow({List<String> stringList, bool isBold, double fontSize}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -315,6 +325,7 @@ class WeeklyMoreElement extends StatelessWidget {
     );
   }
 
+  //функция, возвращающася разделитель с текстом посредине
   Widget customDividerText({String text}) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
@@ -348,6 +359,7 @@ class WeeklyMoreElement extends StatelessWidget {
     );
   }
 
+  //функция возвращающая панель в стиле ВК, в данном теме и с любым виджетом внутри
   Padding buildPanel(
       {@required ThemeData theme,
       @required String label,
