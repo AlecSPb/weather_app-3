@@ -5,11 +5,14 @@ import 'package:weather_app/services/const.dart';
 import 'package:weather_app/services/provider.dart';
 import 'package:weather_app/services/themeProvider.dart';
 
+
+//окно с информацией о приложении
 class InfoPage extends StatelessWidget {
   const InfoPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    //настройки текущей темы приложения
     ThemeData theme = Theme.of(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
