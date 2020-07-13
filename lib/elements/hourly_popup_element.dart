@@ -6,15 +6,21 @@ import 'package:weather_app/services/const.dart';
 import 'package:weather_app/services/provider.dart';
 import 'package:weather_app/services/themeProvider.dart';
 
+//виджет подробного описания почасовго прогоза
+
 class HourlyMoreElement extends StatelessWidget {
   const HourlyMoreElement({Key key, this.time, this.index}) : super(key: key);
 
+  //время
   final String time;
+  //индекс
   final int index;
 
   @override
   Widget build(BuildContext context) {
+    //настройки темы
     ThemeData theme = Theme.of(context);
+    //прогноз
     Forecast provider =
         Provider.of<WeatherProvider>(context, listen: false).forecast;
     return Column(
@@ -40,12 +46,19 @@ class HourlyMoreElement extends StatelessWidget {
                         flex: 1,
                         child: Column(
                           children: <Widget>[
+                            //3 панели в левой части экрана
+                            
+                            //отображение времени в текущей зоне
                             buildLeftTopBlock(theme, provider),
+                            //отображение местного времени и часового пояса
                             buildLeftMiddleBlock(theme, provider),
+                            //отображение ожидаемой погоды (тип)
                             buildLeftBottomBlock(theme, provider)
                           ],
                         ),
                       ),
+                      //1 панель в правой части экрана
+                      //описание условий (облачность, влажность и тп)
                       buildRightBlock(theme, provider, context),
                     ],
                   )),
@@ -74,6 +87,8 @@ class HourlyMoreElement extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                
+                //TermElement - кастомный виджет (в elements/term_element.dart)
                 TermElement(
                   text:
                       '${Provider.of<WeatherProvider>(context, listen: false).getTemp(forecast.hourlyForecast[index].temp)}',
