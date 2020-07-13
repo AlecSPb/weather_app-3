@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+//кастомный виджет - ряд с иконкой условия, значением, ед. измерения и если
+//это направление ветра - со стрелкой в данном направлении
+
 class TermElement extends StatelessWidget {
   const TermElement(
       {Key key,
@@ -9,10 +12,10 @@ class TermElement extends StatelessWidget {
       this.windDirection})
       : super(key: key);
 
-  final String text;
-  final String sign;
-  final String icon;
-  final String windDirection;
+  final String text;  //данные
+  final String sign;  //ед. измерения
+  final String icon;  //иконка
+  final String windDirection; //напр. ветра
 
   @override
   Widget build(BuildContext context) {
