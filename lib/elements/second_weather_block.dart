@@ -7,6 +7,8 @@ import 'package:weather_app/services/const.dart';
 import 'package:weather_app/services/provider.dart';
 import 'package:weather_app/services/themeProvider.dart';
 
+//Виджет нижнего блока прогноза (список с прогнозом на неделю)
+
 class BottomWeatherBlock extends StatefulWidget {
   BottomWeatherBlock({Key key}) : super(key: key);
 
@@ -20,13 +22,15 @@ class _BottomWeatherBlockState extends State<BottomWeatherBlock> {
     super.initState();
   }
 
+  //функция, возвращаются цвет в зависимости от дня недели
   Color getColor(String day) {
     if (day == 'Суббота' || day == 'Воскресенье') {
       return Colors.redAccent;
     }
     return Theme.of(context).textTheme.headline1.color;
   }
-
+  
+  //вызов диалога с подробной информацией о прогнозе на выбранный день
   void showHourlyDialog(BuildContext context, int index, String date) {
     showGeneralDialog(
       barrierLabel: "Barrier",
@@ -35,6 +39,7 @@ class _BottomWeatherBlockState extends State<BottomWeatherBlock> {
       context: context,
       transitionDuration: Duration(milliseconds: 300),
       pageBuilder: (_, __, ___) {
+        //Кастомный виджет (в elements/weekly_popup_element.dart)
         return WeeklyMoreElement(
           index: index,
           date: date,
@@ -53,25 +58,33 @@ class _BottomWeatherBlockState extends State<BottomWeatherBlock> {
 
   @override
   Widget build(BuildContext context) {
+    //настройки темы
     ThemeData theme = Theme.of(context);
+    //размеры экрана в пикселях
     Size size = MediaQuery.of(context).size;
+    //логика
     WeatherProvider provider =
         Provider.of<WeatherProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: Scrollbar(
+        //список с разделителями
         child: ListView.separated(
           itemCount: 8,
           itemBuilder: (context, index) {
             String day;
-
+            
+            //если данные получены (то есть не идет загрузка), то устанавливаем день
             if (!provider.isLoading) {
               day = provider.forecast.weeklyForecast[index].weekday;
             }
+            //если идет загрузка данные, то возвращается загрузочный виджет (shimmer)
+            //иначе элемент списка прогноза
             return !provider.isLoading
                 ? FadeIn(
                     child: ListTile(
                         onTap: () {
+                          //при нажатии на элемент списка вызывается диалог
                           showHourlyDialog(
                               context,
                               index,
