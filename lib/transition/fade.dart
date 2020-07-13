@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+//расширение стандартного "перехода"
+//в данном случае Fade (плавный переход)
 class FadeRoute extends PageRouteBuilder {
+  //получает как аргумент страницу, на которую нужно перейти
   final Widget page;
   FadeRoute({this.page})
       : super(
