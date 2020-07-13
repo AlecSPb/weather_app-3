@@ -1,40 +1,43 @@
+
+//модели прогнозов
+
 class HourlyForecast {
-  String time,
-      icon,
-      weatherType,
-      localTime,
-      pressure,
-      humidity,
-      clouds,
-      windSpeed,
-      windDirection;
-  double temp, feelsLike;
+  String time,  //время
+      icon, //иконка погоды
+      weatherType,  //тип погоды
+      localTime,  //мест. время в данной зоне
+      pressure, //давление
+      humidity, //влажность
+      clouds, //облачность
+      windSpeed,  //скорость ветра
+      windDirection;  //направлеие ветра
+  double temp, feelsLike; //температура, ощущается как
 }
 
 class WeeklyForecast {
-  String time,
-      weekday,
-      icon,
-      sunrise,
-      sunset,
-      tempMax,
-      tempMin,
-      pressure,
-      humidity,
-      windSpeed,
-      windDirection,
-      weatherType,
-      clouds,
-      dayLength,
-      localSunrise,
-      localSunset,
-      uvi;
-  double tempDay,
-      tempNight,
-      tempEvening,
-      tempMorning,
-      feelsLikeDay,
-      feelsLikeMorning,
-      feelsLikeEvening,
-      feelsLikeNight;
+  String time,  //вермя
+      weekday,  //день недели
+      icon, //иконка погоды
+      sunrise,  //время восхода
+      sunset, //время заката 
+      tempMax,  //макс температура (не исп.)
+      tempMin,  //мин температура (не исп.)
+      pressure, //давление
+      humidity, //влажность
+      windSpeed,  //скорость ветра
+      windDirection,  //направлеие ветра
+      weatherType,  //тип погоды
+      clouds, //облачность
+      dayLength,  //продолжительность дня
+      localSunrise, //восход по мест. времени
+      localSunset,  //закат по мест. времени
+      uvi;  //УФ-индекс
+  double tempDay, //температура днем
+      tempNight,  //ночью
+      tempEvening,  //вечером
+      tempMorning,   //утром
+      feelsLikeDay, //ощущается как днем
+      feelsLikeMorning, //утром
+      feelsLikeEvening, //вечером
+      feelsLikeNight; //ночью
 }
