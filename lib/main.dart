@@ -47,6 +47,9 @@ void main() async {
 
 //основной виджет приложения
 class WeatherApp extends StatelessWidget {
+  
+  //функция каждого виджета, вызывается для отрисовки виджета
+  //в первый раз или для обновления кадра
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeProvider>(context);
@@ -113,7 +116,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     //переменная для доступа к данным
     WeatherProvider provider = Provider.of<WeatherProvider>(context);
-    //основное
+   
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -121,6 +124,7 @@ class _HomePageState extends State<HomePage> {
         title: Consumer<WeatherProvider>(
           builder: (context, weather, child) {
             Placemark pos = weather.fullPosition;
+            //провяется найдено ли местоположение
             return pos == null
                 ? Container()
                 : FadeIn(
@@ -171,10 +175,13 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           SafeArea(
+            //если ошибка, показывается ошибка, иначе основное окно
               child: !provider.error
                   ? Column(
                       children: [
+                        //верхний виджет
                         Expanded(flex: 6, child: MainWeatherBlock()),
+                        //нижный виджет
                         Expanded(flex: 4, child: BottomWeatherBlock())
                       ],
                     )
@@ -210,6 +217,7 @@ class _HomePageState extends State<HomePage> {
       ),
       drawerEdgeDragWidth: 100,
       drawerEnableOpenDragGesture: true,
+      //левая открывающаяся панель
       drawer: WeatherDrawer(),
       resizeToAvoidBottomInset: false,
     );
