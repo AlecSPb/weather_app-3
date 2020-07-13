@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 
 class ApiService {
-  final _openWeatherMapToken = '82b97b2530478bd05776df4c57d5b051';
+  final _openWeatherMapToken = 'txtfile';
   final _openWeatherMapBaseURL =
       'https://api.openweathermap.org/data/2.5/onecall?';
 
-  final _openCageToken = '8e3cbe1b921948ec9cb98f8ab6b23f8f';
+  final _openCageToken = 'txtfile';
   final _openCageBaseURL = 'https://api.opencagedata.com/geocode/v1/json?';
 
   String get weatherToken => _openWeatherMapToken;
