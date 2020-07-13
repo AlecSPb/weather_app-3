@@ -3,22 +3,25 @@ import 'package:weather_app/services/const.dart';
 import 'package:weather_app/services/forecast_models.dart';
 import 'package:weather_app/services/translation.dart';
 
-class Forecast {
-  String nowCloudness,
-      pressure,
-      humidity,
-      windSpeed,
-      time,
-      windDirecton,
-      icon,
-      timezone,
-      clouds,
-      uvi;
-  List<HourlyForecast> hourlyForecast;
-  List<WeeklyForecast> weeklyForecast;
-  int timeOffset;
-  double temperature, feelsLike;
+//один из главных классов - прогноз
 
+class Forecast {
+  String nowCloudness, //текущее состояние погоды
+      pressure, //давление
+      humidity, //влажность
+      windSpeed,  //скорость ветра
+      time, //время
+      windDirecton, //направление ветра 
+      icon, //изображение погоды
+      timezone, //часовой пояс
+      clouds, //облачность
+      uvi;  //УФ индекс
+  List<HourlyForecast> hourlyForecast;  //прогноз на 24 часа (список из прогнозов на каждый час)
+  List<WeeklyForecast> weeklyForecast;  //прогноз на 7 дней (список из прогнозов на каждый  день)
+  int timeOffset; //часовая зона относительно UTC
+  double temperature, feelsLike;  //температура, ощущается как
+  
+  //конструктор при инициализации приложения
   Forecast(
       {this.time = ' ',
       this.nowCloudness = ' ',
@@ -26,17 +29,22 @@ class Forecast {
       this.humidity = '~',
       this.windSpeed = '~',
       this.windDirecton = '~',
-      this.icon = 'blank',
+      this.icon = 'blank',//пустая картинка
       this.clouds = '~',
       this.temperature = 0,
       this.feelsLike = 0});
-
+  
+  //функция перевода дат (т.к. даты первоначально на английском)
+  //переводы в services/translation
   String _translator(String data, bool type) {
+    //для каждого элемента словаря, если нашлось нужное слово для перевода
+    //то заменить его значением
     dayTranslationMap.forEach((key, translate) {
       if (data.contains(key)) {
         data = data.replaceFirst(key, translate);
       }
     });
+    //type - перевод месяца
     if (type == true) {
       monthTranslationMap.forEach((key, translate) {
         if (data.contains(key)) {
@@ -46,7 +54,9 @@ class Forecast {
     }
     return data;
   }
-
+  
+  //API возвращает направление в градусах, поэтому они переводятся в 
+  //более понятный для человека формат
   String _getWindDirection(int degrees) {
     if (degrees < 180) {
       if (degrees >= 0 && degrees < 25) {
@@ -78,24 +88,31 @@ class Forecast {
       }
     }
   }
-
+  
+  //перевод и форматирование даты в вид год, месяц, день, часы, минуты
   String _timeFormatter(DateTime time) {
     return _translator(DateFormat.yMMMMd().add_Hm().format(time), true);
   }
-
+  
+  //поиск длины дня (от рассвета до заката)
   String _dayLength(int sunrise, int sunset) {
     Duration dayLen = DateTime.fromMillisecondsSinceEpoch(sunset * 1000)
         .difference(DateTime.fromMillisecondsSinceEpoch(sunrise * 1000));
     return '${dayLen.inHours}ч ${dayLen.inMinutes - (dayLen.inHours * 60)}м';
   }
 
+  //второй конструктор, который вызвается при получении данных
+  //dynamic - грубо говоря "заглушка", или любой тип данных
   Forecast.fromJson(Map<String, dynamic> data, int timezoneOffset) {
+    
     timeOffset = data["timezone_offset"];
 
     List<HourlyForecast> hourlyList = [];
 
     print('start - SUCCESS');
-
+    
+    //заполнение списка почасового прогноза
+    //заполнение объекта класса происходит с помощью каскада (..)
     for (int i = 0; i < 24; i++) {
       var item = data["hourly"][i];
       HourlyForecast tmp = new HourlyForecast()
@@ -120,6 +137,7 @@ class Forecast {
 
     List<WeeklyForecast> weeklyList = [];
 
+    //заполнение списка недельного прогноза
     for (int i = 0; i < 8; i++) {
       var item = data["daily"][i];
 
@@ -166,7 +184,8 @@ class Forecast {
     }
 
     print('weekly - SUCCESS');
-
+    
+    //заполнение текущего прозноза
     this
       ..time = _translator(
           DateFormat.MMMMEEEEd().format(DateTime.fromMillisecondsSinceEpoch(
