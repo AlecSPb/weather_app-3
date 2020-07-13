@@ -1,3 +1,5 @@
+//переводы
+
 Map<String, String> dayTranslationMap = {
   'Monday': 'Понедельник',
   'Tuesday': 'Вторник',
