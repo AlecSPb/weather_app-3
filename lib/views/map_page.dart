@@ -7,15 +7,21 @@ import 'package:weather_app/services/provider.dart';
 import 'package:weather_app/services/themeProvider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+//погода на карте (по факту просто webview)
 class MapPage extends StatelessWidget {
+  //некое "обещание", что переменная будет объявлена позже 
+  //контроллер webview
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    //переменная для доступа к логике
     WeatherProvider provider = Provider.of<WeatherProvider>(context);
+    //широта текущей точки 
     double lat = provider.lat;
+    //долгота текущей точки 
     double lon = provider.lon;
 
     return Scaffold(
@@ -26,6 +32,7 @@ class MapPage extends StatelessWidget {
         ),
         body: Container(
             color: theme.primaryColor,
+          //webview открывает ссылку с текущими координатами
             child: WebView(
               initialUrl:
                   'https://openweathermap.org/weathermap?basemap=map&cities=true&layer=temperature&lat=$lat&lon=$lon&zoom=50',
