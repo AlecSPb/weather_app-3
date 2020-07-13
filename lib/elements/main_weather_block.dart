@@ -6,9 +6,12 @@ import 'package:weather_app/elements/term_element.dart';
 import 'package:weather_app/elements/hourly_element.dart';
 import 'package:weather_app/services/provider.dart';
 
+//главный блок погоды (верхняя часть экрана)
+
 class MainWeatherBlock extends StatelessWidget {
   MainWeatherBlock({Key key}) : super(key: key);
 
+  //функция, возвращающся описание местоположения (регион, страна, город и др)
   String getText(WeatherProvider providerType) {
     String text, tmp;
     text = providerType.fullPosition.country;
@@ -25,8 +28,10 @@ class MainWeatherBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //логика
     WeatherProvider providerType =
         Provider.of<WeatherProvider>(context, listen: false);
+    //настройки темы
     ThemeData theme = Theme.of(context);
 
     return Column(
@@ -167,11 +172,13 @@ class MainWeatherBlock extends StatelessWidget {
                 const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
+              //прокручиваемый список с прогнозом на 24 часа вперед
               child: ListView.builder(
                   itemCount: 24,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) => Consumer<WeatherProvider>(
                           builder: (context, weather, child) {
+                            //ForecastElement - кастомный виджет (в elements/hourly_element.dart)
                         return ForecastElement(
                           data: weather.isLoading
                               ? null
