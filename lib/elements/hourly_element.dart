@@ -9,10 +9,14 @@ import 'package:weather_app/services/forecast_models.dart';
 import 'package:weather_app/services/provider.dart';
 import 'package:weather_app/services/themeProvider.dart';
 
+//виджет ежечасного прогноза
+
 class ForecastElement extends StatefulWidget {
   ForecastElement({Key key, this.data, this.index}) : super(key: key);
 
+  //объект класса с данными
   final HourlyForecast data;
+  //номер виджета
   final int index;
 
   @override
@@ -20,8 +24,10 @@ class ForecastElement extends StatefulWidget {
 }
 
 class _ForecastElementState extends State<ForecastElement> {
+  //если нажата, проигрывается простая анимация
   bool isActivated = false;
 
+  //вызов диалога с более подробной информацией
   void showHourlyDialog(BuildContext context, int index, String time) {
     showGeneralDialog(
       barrierLabel: "Barrier",
@@ -30,11 +36,13 @@ class _ForecastElementState extends State<ForecastElement> {
       context: context,
       transitionDuration: Duration(milliseconds: 400),
       pageBuilder: (_, __, ___) {
+        //вилдет с более подробной информацией
         return HourlyMoreElement(
           time: time,
           index: index,
         );
       },
+      //builder перехода
       transitionBuilder: (_, anim, __, child) {
         return SlideTransition(
           position: Tween(begin: Offset(0, 1), end: Offset(0, 0))
@@ -48,9 +56,12 @@ class _ForecastElementState extends State<ForecastElement> {
 
   @override
   Widget build(BuildContext context) {
+    //доступ к настройкам темы
     ThemeData theme = Theme.of(context);
+    //доступ в логике
     WeatherProvider provider =
         Provider.of<WeatherProvider>(context, listen: false);
+    //сам виджет
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: AspectRatio(
@@ -60,9 +71,11 @@ class _ForecastElementState extends State<ForecastElement> {
                 borderRadius: BorderRadius.circular(10),
                 color: theme.primaryColor.withOpacity(0.3)),
             child: widget.data != null
+              //если данных нет, возвращается загрузочный элемент (shimmer)
                 ? FadeIn(
                     child: FlatButton(
                       splashColor: provider.secondAccent,
+                      //вызов подробной информации и анимации
                       onPressed: () {
                         setState(() {
                           isActivated = true;
